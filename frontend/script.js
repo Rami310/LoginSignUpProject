@@ -79,7 +79,7 @@ async function loadProfile() {
 function logout() {
   console.log("Logout clicked");
   localStorage.removeItem("token");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 if (window.location.pathname.includes("profile.html")) {
