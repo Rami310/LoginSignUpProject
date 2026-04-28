@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api/auth";
+const API_URL = "https://loginsignupproject-production.up.railway.app/api/auth";
 
 async function signup() {
   const username = document.getElementById("signupUsername").value;
