@@ -55,7 +55,7 @@ async function loadProfile() {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 
@@ -71,23 +71,67 @@ async function loadProfile() {
   if (response.ok) {
     document.getElementById("username").textContent = data.user.username;
     document.getElementById("email").textContent = data.user.email;
+
+    document.getElementById("profileImage").src =
+      data.user.profile_image || "https://via.placeholder.com/120";
   } else {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
   }
 }
 
 function logout() {
-  console.log("Logout clicked");
   localStorage.removeItem("token");
   window.location.href = "index.html";
+}
+
+async function uploadProfileImage() {
+  const fileInput = document.getElementById("imageInput");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please select an image first");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const response = await fetch(`${API_URL}/upload-profile`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+    body: formData
+  });
+
+  const data = await response.json();
+
+  if (response.ok) {
+    document.getElementById("profileImage").src = data.imageUrl;
+  } else {
+    console.log(data.error);
+    alert(data.error || "Image upload failed");
+  }
 }
 
 if (window.location.pathname.includes("profile.html")) {
   loadProfile();
 
   const logoutBtn = document.getElementById("logoutBtn");
+  const uploadBtn = document.getElementById("uploadBtn");
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", logout);
+  }
+
+  if (uploadBtn) {
+    uploadBtn.addEventListener("click", uploadProfileImage);
   }
 }

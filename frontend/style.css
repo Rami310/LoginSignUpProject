@@ -124,6 +124,10 @@ a {
   object-fit: cover;
 }
 
+#imageInput {
+  margin-top: 10px;
+}
+
 .profile-card h3 {
   margin: 10px 0 5px;
   font-size: 24px;

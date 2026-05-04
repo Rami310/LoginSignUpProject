@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 const authMiddleware = require("../middlewares/authMiddleware");
 const { validateSignup, validateLogin } = require("../middlewares/validateAuth");
+const upload = require("../middlewares/upload");
 
 const router = express.Router();
 const SECRET = process.env.JWT_SECRET;
@@ -90,6 +91,20 @@ router.post("/login", validateLogin, (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+router.post("/upload-profile", authMiddleware, upload.single("image"), (req, res) => {
+  const imageUrl = req.file.path;
+
+  db.query(
+    "UPDATE users SET profile_image = ? WHERE id = ?",
+    [imageUrl, req.user.id],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      res.json({ message: "Image uploaded", imageUrl });
+    }
+  );
 });
 
 router.get("/profile", authMiddleware, (req, res) => {
