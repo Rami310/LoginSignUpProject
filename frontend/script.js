@@ -85,8 +85,12 @@ function logout() {
 }
 
 async function uploadProfileImage() {
+  console.log("Upload button clicked");
+
   const fileInput = document.getElementById("imageInput");
   const file = fileInput.files[0];
+
+  console.log("Selected file:", file);
 
   if (!file) {
     alert("Please select an image first");
@@ -94,6 +98,7 @@ async function uploadProfileImage() {
   }
 
   const token = localStorage.getItem("token");
+  console.log("Token:", token);
 
   if (!token) {
     window.location.href = "index.html";
@@ -111,15 +116,19 @@ async function uploadProfileImage() {
     body: formData
   });
 
+  console.log("Response status:", response.status);
+
   const data = await response.json();
+  console.log("Response data:", data);
 
   if (response.ok) {
     document.getElementById("profileImage").src = data.imageUrl;
+    alert("Image uploaded successfully");
   } else {
-    console.log(data.error);
     alert(data.error || "Image upload failed");
   }
 }
+
 
 if (window.location.pathname.includes("profile.html")) {
   loadProfile();
