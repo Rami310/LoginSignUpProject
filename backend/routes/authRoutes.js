@@ -109,7 +109,7 @@ router.post("/upload-profile", authMiddleware, upload.single("image"), (req, res
 
 router.get("/profile", authMiddleware, (req, res) => {
   db.query(
-    "SELECT id, username, email, created_at FROM users WHERE id = ?",
+    "SELECT id, username, email, created_at, profile_image FROM users WHERE id = ?",
     [req.user.id],
     (err, result) => {
       if (err) {
