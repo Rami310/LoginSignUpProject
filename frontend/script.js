@@ -84,10 +84,6 @@ function logout() {
   window.location.href = "index.html";
 }
 
-function openFilePicker(){
-  document.getElementById("imageInput").click;
-}
-
 async function uploadProfileImage() {
   const fileInput = document.getElementById("imageInput");
   const file = fileInput.files[0];
@@ -129,7 +125,10 @@ if (window.location.pathname.includes("profile.html")) {
   }
 
   if (uploadBtn) {
-    uploadBtn.addEventListener("click", openFilePicker);
+    uploadBtn.addEventListener("click", () => {
+      console.log("Upload button clicked");
+      imageInput.click();
+    });
   }
 
   if (imageInput) {
