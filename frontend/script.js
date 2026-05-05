@@ -84,26 +84,17 @@ function logout() {
   window.location.href = "index.html";
 }
 
-async function uploadProfileImage() {
-  console.log("Upload button clicked");
+function openFilePicker(){
+  document.getElementById("imageInput").click;
+}
 
+async function uploadProfileImage() {
   const fileInput = document.getElementById("imageInput");
   const file = fileInput.files[0];
 
-  console.log("Selected file:", file);
-
-  if (!file) {
-    alert("Please select an image first");
-    return;
-  }
+  if (!file) return;
 
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
-
-  if (!token) {
-    window.location.href = "index.html";
-    return;
-  }
 
   const formData = new FormData();
   formData.append("image", file);
@@ -116,16 +107,12 @@ async function uploadProfileImage() {
     body: formData
   });
 
-  console.log("Response status:", response.status);
-
   const data = await response.json();
-  console.log("Response data:", data);
 
   if (response.ok) {
     document.getElementById("profileImage").src = data.imageUrl;
-    alert("Image uploaded successfully");
   } else {
-    alert(data.error || "Image upload failed");
+    alert(data.error || "Upload failed");
   }
 }
 
@@ -135,12 +122,17 @@ if (window.location.pathname.includes("profile.html")) {
 
   const logoutBtn = document.getElementById("logoutBtn");
   const uploadBtn = document.getElementById("uploadBtn");
+  const imageInput = document.getElementById("imageInput");
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", logout);
   }
 
   if (uploadBtn) {
-    uploadBtn.addEventListener("click", uploadProfileImage);
+    uploadBtn.addEventListener("click", openFilePicker);
+  }
+
+  if (imageInput) {
+    imageInput.addEventListener("change", uploadProfileImage);
   }
 }
